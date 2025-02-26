@@ -1,0 +1,230 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "X",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "X": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "X",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-02-03T08:20:20.914Z",
+  "id": "T3RBTTBohDqZK9pZ",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Freelancer Lead Generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -340
+      ],
+      "id": "7b3cdf37-6ecb-4a49-b7a4-ee02627a3c8d",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "searchText": "=\"Looking for a freelancer\" OR \"Need a developer\" OR \"Hiring a designer\" is:quote",
+        "additionalFields": {
+          "sortOrder": "recency"
+        }
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        260,
+        -200
+      ],
+      "id": "ba43751d-7423-4498-8c8c-5ed14a4c0b22",
+      "name": "X",
+      "retryOnFail": true,
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "uLGRIyo3codW74Uk",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        -20
+      ],
+      "id": "446b97a5-d841-4db8-b45f-68c505f182cd",
+      "name": "Wait",
+      "webhookId": "f91d3d7d-9cb2-4cc2-9167-44d89aaca8ff"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a7eae9f4-8c89-4610-a674-a4bdd22f83c0",
+              "leftValue": "=",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -420
+      ],
+      "id": "685a9e82-7e78-4796-9955-95a9749b24c1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        860,
+        -540
+      ],
+      "id": "38519b1f-b7b6-4fce-b3d0-599c30800bed",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GuakNjBYbB8T74Nb",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.common.keys import Keys\nimport time\nimport pandas as pd\n\noptions = webdriver.ChromeOptions()\noptions.add_argument(\"--headless\")  \ndriver = webdriver.Chrome(options=options)\n\n# Open Twitter search for freelancer jobs\ndriver.get(\"https://twitter.com/search?q=Looking%20for%20a%20freelancer&src=typed_query\")\ntime.sleep(5)\n\ntweets = []\nfor _ in range(3):  # Scroll 3 times\n    driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)\n    time.sleep(2)\n    tweet_elements = driver.find_elements(By.XPATH, '//article//div[@data-testid=\"tweetText\"]')\n    for tweet in tweet_elements:\n        tweets.append(tweet.text)\n\ndf = pd.DataFrame(tweets, columns=[\"Tweet\"])\ndf.to_csv(\"twitter_leads.csv\", index=False)\n\ndriver.quit()\nprint(\"✅ Twitter scraping complete! Data saved to twitter_leads.csv\")\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -640
+      ],
+      "id": "5aae7962-0860-4f3c-a593-062ac52da179",
+      "name": "Twitter Scraper"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.common.keys import Keys\nimport time\nimport pandas as pd\n\noptions = webdriver.ChromeOptions()\noptions.add_argument(\"--headless\")  \ndriver = webdriver.Chrome(options=options)\n\n# Open Twitter search for freelancer jobs\ndriver.get(\"https://twitter.com/search?q=Looking%20for%20a%20freelancer&src=typed_query\")\ntime.sleep(5)\n\ntweets = []\nfor _ in range(3):  # Scroll 3 times\n    driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)\n    time.sleep(2)\n    tweet_elements = driver.find_elements(By.XPATH, '//article//div[@data-testid=\"tweetText\"]')\n    for tweet in tweet_elements:\n        tweets.append(tweet.text)\n\ndf = pd.DataFrame(tweets, columns=[\"Tweet\"])\ndf.to_csv(\"twitter_leads.csv\", index=False)\n\ndriver.quit()\nprint(\"✅ Twitter scraping complete! Data saved to twitter_leads.csv\")\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -240
+      ],
+      "id": "40ff5352-dd51-4df9-94a9-3d8290bbf274",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        -680
+      ],
+      "id": "fb4ab61d-a3b2-4290-ba01-30c47d5b3887",
+      "name": "Code1"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n-workflows",
+  "repo_owner": "lmtNoLimit",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-02-05T06:50:56.000Z",
+  "versionId": "da4715b2-1ef9-45af-8546-da5a9d982c2b"
+}

@@ -1,0 +1,179 @@
+{
+  "active": false,
+  "connections": {
+    "Fetch Emails": {
+      "main": [
+        [
+          {
+            "node": "Filter Important Emails",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Important Emails": {
+      "main": [
+        [
+          {
+            "node": "Summarize Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize Email": {
+      "main": [
+        [
+          {
+            "node": "Send to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-02-17T00:54:50.972Z",
+  "id": "7DriEtGXNYrJI6L2",
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Fetch Emails",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        -140,
+        0
+      ],
+      "id": "887eb898-39be-48a9-98d0-050e8da6943d"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"from\"]}}",
+              "operation": "contains",
+              "value2": "boss@company.com"
+            },
+            {
+              "value1": "={{$json[\"subject\"]}}",
+              "operation": "contains",
+              "value2": "urgent"
+            },
+            {
+              "value1": "={{$json[\"subject\"]}}",
+              "operation": "contains",
+              "value2": "meeting"
+            },
+            {
+              "value1": "={{$json[\"subject\"]}}",
+              "operation": "contains",
+              "value2": "invoice"
+            },
+            {
+              "value1": "={{$json[\"subject\"]}}",
+              "operation": "contains",
+              "value2": "deadline"
+            }
+          ]
+        }
+      },
+      "name": "Filter Important Emails",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -40
+      ],
+      "id": "b5ef6186-10b5-467d-b69e-cc9d35a25b20"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "prompt": {
+          "messages": [
+            {}
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "name": "Summarize Email",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -220
+      ],
+      "id": "99aee7fb-afb2-4fee-a95a-023d0f1b1ffd",
+      "credentials": {
+        "openAiApi": {
+          "id": "44b1cW1O3XzSV61k",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "#important-emails",
+        "text": "📧 *Important Email Summary*:\n\n📨 *From:* {{$json[\"from\"]}}\n📝 *Subject:* {{$json[\"subject\"]}}\n📋 *Summary:* {{$json[\"summary\"]}}",
+        "otherOptions": {},
+        "attachments": []
+      },
+      "name": "Send to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -120
+      ],
+      "id": "5aa0b00c-92dd-4cc0-b73f-44bb2f94c8a9"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        380,
+        0
+      ],
+      "id": "23c9082a-9f0a-4a9e-90ce-b28499afc3b6",
+      "name": "Gmail",
+      "webhookId": "d470cb02-1161-42da-9f5f-4da671456493",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "iXxdVuXCJJZjNdn9",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n-workflows",
+  "repo_owner": "lmtNoLimit",
+  "repo_path": "",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-02-17T00:54:50.972Z",
+  "versionId": "11fd17b6-97d0-4ecd-80ad-3fed6a811f4e"
+}
