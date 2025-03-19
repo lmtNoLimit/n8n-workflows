@@ -1,0 +1,21 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-03-18T02:35:04.281Z",
+  "id": "EhvpnROHXNKqSkb5",
+  "meta": null,
+  "name": "Auto Calendar",
+  "nodes": [],
+  "pinData": {},
+  "repo_name": "n8n-workflows",
+  "repo_owner": "lmtNoLimit",
+  "repo_path": "",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-18T02:35:04.281Z",
+  "versionId": "d46a7a7a-a3bf-4571-99d9-42e55008e4ce"
+}
