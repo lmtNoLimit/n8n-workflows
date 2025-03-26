@@ -1,0 +1,37 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-03-25T03:42:51.689Z",
+  "id": "3ZBKFepMKZOzN6L2",
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "b2498b6d-01c5-4224-99c8-aa00964e1aca",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d8f46861-5ee2-407d-9e14-068ad43513f2",
+      "name": "Webhook",
+      "webhookId": "b2498b6d-01c5-4224-99c8-aa00964e1aca"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n-workflows",
+  "repo_owner": "lmtNoLimit",
+  "repo_path": "",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-25T03:42:51.689Z",
+  "versionId": "771c1963-e89e-464b-8980-2afc714728c5"
+}
