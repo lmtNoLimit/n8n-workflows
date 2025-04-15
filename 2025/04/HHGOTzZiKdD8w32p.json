@@ -1,29 +1,29 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
-    "When chat message received": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MCP Client": {
+    "Jira Software": {
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "MCP Server Trigger",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model": {
+    "Jira Software1": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
           {
@@ -44,6 +44,28 @@
           }
         ]
       ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-14T14:23:09.269Z",
@@ -51,21 +73,102 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "My workflow 2",
+  "name": "My MCP Servers",
   "nodes": [
     {
       "parameters": {
+        "path": "35eef3a1-5ab3-40ab-933f-011f001c9168"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        320
+      ],
+      "id": "0022e33f-fcd4-4f6a-98bf-bef1925983ee",
+      "name": "MCP Server Trigger",
+      "webhookId": "35eef3a1-5ab3-40ab-933f-011f001c9168"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 100,
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
       "position": [
-        0,
-        0
+        60,
+        540
       ],
-      "id": "eb9685b5-5583-4547-9e6c-c04273ded6f0",
-      "name": "When chat message received",
-      "webhookId": "c3ed33a9-8f74-439c-8394-b5c1d9678ec0"
+      "id": "5de764a0-b2fd-401c-895c-391fe3f22ace",
+      "name": "Jira Software",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "a7zSw1aZt3tDXDEd",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "value": "21962",
+          "mode": "id"
+        },
+        "issueType": {
+          "__rl": true,
+          "value": "10123",
+          "mode": "list",
+          "cachedResultName": "Story"
+        },
+        "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}",
+        "additionalFields": {
+          "customFieldsUi": {
+            "customFieldsValues": [
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_12030",
+                  "mode": "list",
+                  "cachedResultName": "User Story"
+                }
+              },
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_12228",
+                  "mode": "list",
+                  "cachedResultName": "Definition of Done"
+                }
+              },
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_12031",
+                  "mode": "list",
+                  "cachedResultName": "Acceptance Criteria"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        420,
+        580
+      ],
+      "id": "9663bc12-6f54-4a60-9143-11d40d74c970",
+      "name": "Jira Software1",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "a7zSw1aZt3tDXDEd",
+          "name": "Jira SW Cloud account"
+        }
+      }
     },
     {
       "parameters": {
@@ -74,59 +177,71 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.8,
       "position": [
-        220,
-        0
+        120,
+        -200
       ],
-      "id": "25011c00-ae49-4795-8231-d35b11a3e100",
+      "id": "ddef5d08-a15a-4720-933e-11b56c6fc9f6",
       "name": "AI Agent"
     },
     {
       "parameters": {
-        "sseEndpoint": "http://localhost:9000/sse"
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
-      "typeVersion": 1,
-      "position": [
-        560,
-        220
-      ],
-      "id": "7e0f0eb3-9694-4832-a39c-1e250f1882d5",
-      "name": "MCP Client"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4o-mini"
-        },
+        "modelName": "models/gemini-2.0-flash",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
       "position": [
-        120,
-        220
+        -100,
+        20
       ],
-      "id": "f40ffcb2-cee6-4602-9d3a-980a39c3c9e3",
-      "name": "OpenAI Chat Model",
+      "id": "4b12edf0-148e-492d-8f88-86a9548b70a2",
+      "name": "Google Gemini Chat Model",
       "credentials": {
-        "openAiApi": {
-          "id": "V3OL1ICP4aUfhXRL",
-          "name": "OpenAi account"
+        "googlePalmApi": {
+          "id": "Rus7bBVcrYT8ebYE",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
     {
-      "parameters": {},
+      "parameters": {
+        "contextWindowLength": 15
+      },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        320,
-        220
+        220,
+        20
       ],
-      "id": "b1f05b4c-51c4-405a-b090-1f544ca87d23",
+      "id": "e9870c42-6547-4c23-9e82-71eb3a305303",
       "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n.srv705828.hstgr.cloud/mcp/35eef3a1-5ab3-40ab-933f-011f001c9168/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        480,
+        20
+      ],
+      "id": "22ce63c3-9d27-4c0a-add9-6ae08aa8a60a",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        -240
+      ],
+      "id": "b71d9d25-1aa1-4ead-a93e-99944b61b548",
+      "name": "When chat message received",
+      "webhookId": "76afaf85-ae94-4341-8d55-36ab42e4b0dc"
     }
   ],
   "pinData": {},
@@ -138,7 +253,7 @@
   },
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-04-14T14:23:09.269Z",
-  "versionId": "705a313d-ecd1-440a-96d4-5e8f226e1ef8"
+  "triggerCount": 2,
+  "updatedAt": "2025-04-15T03:55:14.000Z",
+  "versionId": "3e48def8-dbdb-43c6-a4a6-fa4f3baa34cb"
 }
