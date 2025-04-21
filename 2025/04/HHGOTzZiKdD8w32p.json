@@ -91,15 +91,13 @@
     },
     {
       "parameters": {
-        "operation": "getAll",
-        "limit": 100,
-        "options": {}
+        "resource": "__CUSTOM_API_CALL__"
       },
       "type": "n8n-nodes-base.jiraTool",
       "typeVersion": 1,
       "position": [
-        60,
-        540
+        20,
+        620
       ],
       "id": "5de764a0-b2fd-401c-895c-391fe3f22ace",
       "name": "Jira Software",
@@ -158,8 +156,8 @@
       "type": "n8n-nodes-base.jiraTool",
       "typeVersion": 1,
       "position": [
-        420,
-        580
+        240,
+        600
       ],
       "id": "9663bc12-6f54-4a60-9143-11d40d74c970",
       "name": "Jira Software1",
@@ -242,6 +240,19 @@
       "id": "b71d9d25-1aa1-4ead-a93e-99944b61b548",
       "name": "When chat message received",
       "webhookId": "76afaf85-ae94-4341-8d55-36ab42e4b0dc"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -660,
+        180
+      ],
+      "id": "207d096f-9d3f-47ae-8563-c2500af2bd0a",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {},
@@ -254,6 +265,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2025-04-15T03:55:14.000Z",
-  "versionId": "3e48def8-dbdb-43c6-a4a6-fa4f3baa34cb"
+  "updatedAt": "2025-04-21T09:08:50.000Z",
+  "versionId": "4ea1d638-cdc0-4a31-a00b-05aee7297d71"
 }
